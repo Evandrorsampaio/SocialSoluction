@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SocialSoluctionMVC.Entities.Anuncio>
+
+@{
+    ViewData["Title"] = "Anúncios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Adicionar</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publicacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CEP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logradouro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Complemento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bairro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Localidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UF)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.CPFCNPJ)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publicacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CEP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logradouro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Complemento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bairro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Localidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UF)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Visualizar</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

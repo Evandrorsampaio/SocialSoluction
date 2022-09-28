@@ -1,0 +1,85 @@
+﻿@model SocialSoluctionMVC.Entities.Anuncio
+
+@{
+    ViewData["Title"] = "Edição";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Anuncio</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tipo" class="control-label"></label>
+                <input asp-for="Tipo" class="form-control" />
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClienteId" class="control-label"></label>
+                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publicacao" class="control-label"></label>
+                <input asp-for="Publicacao" class="form-control" />
+                <span asp-validation-for="Publicacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEP" class="control-label"></label>
+                <input asp-for="CEP" class="form-control" />
+                <span asp-validation-for="CEP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Logradouro" class="control-label"></label>
+                <input asp-for="Logradouro" class="form-control" />
+                <span asp-validation-for="Logradouro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Complemento" class="control-label"></label>
+                <input asp-for="Complemento" class="form-control" />
+                <span asp-validation-for="Complemento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bairro" class="control-label"></label>
+                <input asp-for="Bairro" class="form-control" />
+                <span asp-validation-for="Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Localidade" class="control-label"></label>
+                <input asp-for="Localidade" class="form-control" />
+                <span asp-validation-for="Localidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UF" class="control-label"></label>
+                <input asp-for="UF" class="form-control" />
+                <span asp-validation-for="UF" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Listar todos</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
