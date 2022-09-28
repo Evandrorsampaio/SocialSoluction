@@ -13,8 +13,8 @@ namespace SocialSoluction.Context
         {
 
         }
-        DbSet<Cliente> Clientes { get; set; }
-        DbSet<Anuncio> Anuncios { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Anuncio> Anuncios { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             new ClienteConfig().Configure(modelBuilder.Entity<Cliente>());
