@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialSoluctionMVC.Data.Context;
 
 namespace SocialSoluctionMVC.Data.Migrations
 {
     [DbContext(typeof(SocialSoluctionContext))]
-    partial class SocialSoluctionContextModelSnapshot : ModelSnapshot
+    [Migration("20220929105246_SoftDelete")]
+    partial class SoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,6 @@ namespace SocialSoluctionMVC.Data.Migrations
 
                     b.Property<bool>("Excluido")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("Exclusao")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Localidade")
                         .HasColumnType("nvarchar(max)");
@@ -90,9 +89,6 @@ namespace SocialSoluctionMVC.Data.Migrations
 
                     b.Property<bool>("Excluido")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("Exclusao")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
                         .IsRequired()

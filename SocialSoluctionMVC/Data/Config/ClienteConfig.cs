@@ -1,6 +1,7 @@
 ﻿using Microsoft.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace SocialSoluctionMVC.Entities.Config
 {
@@ -14,6 +15,7 @@ namespace SocialSoluctionMVC.Entities.Config
             builder.Property(c => c.Email).IsRequired();
             builder.Property(c => c.Nome).IsRequired();
             builder.Property(c => c.CPFCNPJ).IsRequired();
+            builder.HasQueryFilter(p => !p.Excluido);
         }
     }
 }

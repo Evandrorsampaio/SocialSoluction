@@ -16,6 +16,8 @@ namespace SocialSoluctionMVC.Entities.Config
             builder.Property(a => a.Descricao).IsRequired();
             builder.Property(a => a.Valor).IsRequired();
             builder.Property(a => a.Publicacao).IsRequired();
+            builder.HasQueryFilter(p => !p.Excluido);
+
         }
     }
 }

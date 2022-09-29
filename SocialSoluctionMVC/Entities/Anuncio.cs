@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using SocialSoluctionMVC.Entities.Enums;
+using SocialSoluctionMVC.Entities.Interfaces;
 
 namespace SocialSoluctionMVC.Entities
 {
-    public class Anuncio: EntityBase
+    public class Anuncio: EntityBase, ISoftDelete
     {
         public int Tipo { set; get; }
 
@@ -32,6 +33,8 @@ namespace SocialSoluctionMVC.Entities
         
         public string UF { get; set; }
 
-     
+        public bool Excluido { get; set; }
+
+        public DateTime Exclusao { get; set; }
     }
 }

@@ -25,6 +25,24 @@ namespace SocialSoluctionMVC.Controllers
             return View(await _context.Clientes.ToListAsync());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchText)
+        {
+            var query = from c in _context.Clientes
+                        select c;
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(c => 
+                    c.Nome.ToLower().Contains(searchText.ToLower())
+                    || c.Email.ToLower().Contains(searchText.ToLower())
+                    || c.CPFCNPJ.ToLower().Contains(searchText.ToLower())
+                );
+            }
+            TempData["searchText"] = searchText;
+            return View(await query.ToListAsync());
+        }
+
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
