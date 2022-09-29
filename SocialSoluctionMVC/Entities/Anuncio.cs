@@ -35,6 +35,6 @@ namespace SocialSoluctionMVC.Entities
 
         public bool Excluido { get; set; }
 
-        public DateTime Exclusao { get; set; }
+        public DateTime? Exclusao { get; set; }
     }
 }

@@ -1,8 +1,10 @@
-﻿@model IEnumerable<SocialSoluctionMVC.Entities.Anuncio>
+﻿@using SocialSoluctionMVC.Utils
+@model IEnumerable<SocialSoluctionMVC.Entities.Anuncio>
 
 @{
     ViewData["Title"] = "Anúncios";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var searchText = ViewData["searchText"];
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -10,6 +12,21 @@
 <p>
     <a asp-action="Create">Adicionar</a>
 </p>
+<form asp-action="Index" method="post">
+    <div class="row">
+        <div class="form-row">
+            <div class="col col-md-4">
+                <select name="tipo" class="form-control" asp-items="ViewBag.Tipos" placeholder="Tipo"></select>
+            </div>
+            <div class="col col-md-6">
+                <input type="text" class="form-control" name="searchText" value="@searchText" placeholder="Cliente" />
+            </div>
+            <div class="col col-md-2">
+                <input type="submit" value="Localizar" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -53,10 +70,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
+                @TipoAnuncio.TipoNome( item.Tipo )
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.CPFCNPJ)
+                @Html.DisplayFor(modelItem => item.Cliente.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Valor)

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialSoluctionMVC.Data.Context;
 using SocialSoluctionMVC.Entities;
+using SocialSoluctionMVC.Entities.Enums;
+using SocialSoluctionMVC.Utils;
 
 namespace SocialSoluctionMVC.Controllers
 {
@@ -23,7 +25,36 @@ namespace SocialSoluctionMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var socialSoluctionContext = _context.Anuncios.Include(a => a.Cliente);
+            ViewData["Tipos"] = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
             return View(await socialSoluctionContext.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int tipo, string searchText)
+        {
+            var query = from a in _context.Anuncios.Include(a => a.Cliente)
+                        select a;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(a => a.Cliente.Nome.ToLower().Contains(searchText.ToLower()));
+            }
+
+            if (tipo > 0)
+            {
+                query = query.Where(a => a.Tipo == tipo);
+            }
+
+            var tipos = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
+            foreach (var t in tipos)
+            {
+                if(t.Value.Equals(tipo.ToString()))
+                {
+                    t.Selected = true;
+                }
+            }
+            ViewData["Tipos"] = tipos;
+            ViewData["searchText"] = searchText;
+            return View(await query.ToListAsync());
         }
 
         // GET: Anuncios/Details/5
@@ -42,13 +73,15 @@ namespace SocialSoluctionMVC.Controllers
                 return NotFound();
             }
 
+            ViewData["tipo"] = TipoAnuncio.TipoNome(anuncio.Tipo);
             return View(anuncio);
         }
 
         // GET: Anuncios/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CPFCNPJ");
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["Tipo"] = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
             return View();
         }
 
@@ -65,7 +98,8 @@ namespace SocialSoluctionMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CPFCNPJ", anuncio.ClienteId);
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["Tipo"] = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
             return View(anuncio);
         }
 
@@ -82,7 +116,8 @@ namespace SocialSoluctionMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CPFCNPJ", anuncio.ClienteId);
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["Tipo"] = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
             return View(anuncio);
         }
 
@@ -118,7 +153,8 @@ namespace SocialSoluctionMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CPFCNPJ", anuncio.ClienteId);
+            ViewData["Clientes"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["Tipo"] = new SelectList(TipoAnuncio.TiposAnuncios(), "Id", "Nome");
             return View(anuncio);
         }
 
@@ -137,7 +173,7 @@ namespace SocialSoluctionMVC.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["tipo"] = TipoAnuncio.TipoNome(anuncio.Tipo);
             return View(anuncio);
         }
 

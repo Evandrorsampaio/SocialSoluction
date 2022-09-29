@@ -12,8 +12,14 @@
     <a asp-action="Create">Adicionar</a>
 </p>
 <form asp-action="Index" method="post">
-    <input type="text" name="searchText" value="@searchText" />
-    <input type="submit" value="Localizar" class="btn btn-primary" />
+    <div class="form-row">
+        <div class="col col-md-9">
+            <input type="text" class="form-control" name="searchText" value="@searchText" placeholder="Nome ou Email ou CNPJ ou CPF" />
+        </div>
+        <div class="col col-md-3">
+            <input type="submit" value="Localizar" class="btn btn-primary" />
+        </div>
+    </div>
 </form>
 <table class="table">
     <thead>
