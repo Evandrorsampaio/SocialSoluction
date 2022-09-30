@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialSoluctionMVC.Data.Context;
 using SocialSoluctionMVC.Entities;
+using SocialSoluctionMVC.Utils;
 
 namespace SocialSoluctionMVC.Controllers
 {
@@ -76,6 +78,7 @@ namespace SocialSoluctionMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                cliente.CPFCNPJ = cliente.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -115,6 +118,7 @@ namespace SocialSoluctionMVC.Controllers
             {
                 try
                 {
+                    cliente.CPFCNPJ = cliente.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
                     _context.Update(cliente);
                     await _context.SaveChangesAsync();
                 }
@@ -142,13 +146,14 @@ namespace SocialSoluctionMVC.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
+            var cliente = await _context.Clientes.Include(c => c.Anuncios)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
                 return NotFound();
             }
 
+            ViewData["TemImovel"] = (cliente.Anuncios.Count > 0);
             return View(cliente);
         }
 
@@ -166,6 +171,39 @@ namespace SocialSoluctionMVC.Controllers
         private bool ClienteExists(int id)
         {
             return _context.Clientes.Any(e => e.Id == id);
+        }
+
+        public bool ValidaCPFCNPJ(string id)
+        {
+            if (string.IsNullOrEmpty(id)) { 
+                return false; 
+            }   
+
+            var isCNPJ = Validacao.ValidaCNPJ(id);
+            var isCPF = Validacao.ValidaCPF(id);
+
+            return isCNPJ || isCPF;
+        }
+
+        [HttpPost]
+        public bool ValidaCPFExistente(int id, string CPFCNPJ)
+        {
+            if(string.IsNullOrEmpty(CPFCNPJ))
+            {
+                return false;
+            }
+
+            
+            var query = _context.Clientes
+                        .Where(c => c.CPFCNPJ.Equals(CPFCNPJ));
+            if(id > 0)
+            {
+                query = query.Where(c => c.Id != id);
+            }
+            
+            var qtdClientes = query.Count();
+
+            return qtdClientes == 0;
         }
     }
 }

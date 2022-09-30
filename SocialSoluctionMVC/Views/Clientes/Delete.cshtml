@@ -31,10 +31,16 @@
             @Html.DisplayFor(model => model.CPFCNPJ)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger" /> |
-        <a asp-action="Index">Listar todos</a>
-    </form>
+        @if((bool)ViewData["TemImovel"]){
+            <p>
+                <span id="CPFCNPJInvalidos" class="text-danger">Cliente com imóveis cadastrados, não é possível excluir.</span>
+            </p>
+            <a asp-action="Index">Listar todos</a>
+        }else {
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Excluir" class="btn btn-danger" /> |
+                <a asp-action="Index">Listar todos</a>
+            </form>
+        }
 </div>

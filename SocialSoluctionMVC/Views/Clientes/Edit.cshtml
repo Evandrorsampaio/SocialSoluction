@@ -25,12 +25,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="CPFCNPJ" class="control-label"></label>
-                <input asp-for="CPFCNPJ" class="form-control" />
+                <input asp-for="CPFCNPJ" id="CPFCNPJ" class="form-control" />
                 <span asp-validation-for="CPFCNPJ" class="text-danger"></span>
+                <span id="CPFCNPJInvalidos" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id" id="Id" />
             <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <input type="button" id="btnSalvar" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -42,4 +43,34 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#btnSalvar').click(function () {
+            var vCpfCnpj = $("#CPFCNPJ").val();
+            var Id = $("#Id").val();
+            $.get("https://localhost:44326/Clientes/ValidaCPFCNPJ/" + vCpfCnpj,
+                function (data, status) {
+                    if (!data) {
+                        $("#CPFCNPJInvalidos").html('Informe um CPF ou CNPJ válido.');
+                    }
+                    else {
+                        $.post("https://localhost:44326/Clientes/ValidaCPFExistente",
+                            {
+                                id: Id,
+                                cpfCnpj: vCpfCnpj
+                            },
+                            function (data, status) {
+                                if (!data) {
+                                    $("#CPFCNPJInvalidos").html('CPF ou CNPJ já vinculado a outro cliente.');
+                                }
+                                else {
+                                    $("form").submit();
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        });
+
+    </script>
 }

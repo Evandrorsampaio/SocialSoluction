@@ -10,7 +10,7 @@
 <h4>Anúncio</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -39,8 +39,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="CEP" class="control-label"></label>
-                <input asp-for="CEP" class="form-control" />
+                <input asp-for="CEP" id="CEP" class="form-control" /> 
+                <input type="button" id="btnBuscarCEP" value="Buscar" class="input-group-text" />
                 <span asp-validation-for="CEP" class="text-danger"></span>
+                <span id="ErroAoBuscarCEP" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Logradouro" class="control-label"></label>
@@ -80,4 +82,28 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#btnBuscarCEP').click(function () {
+            var CEP = $("#CEP").val();
+            $.get(`https://viacep.com.br/ws/${CEP}/json/`,
+                function (data, status) {
+                    if (!data.erro) {
+                        $("#ErroAoBuscarCEP").html('');
+                        $('#Logradouro').val(data.logradouro);
+                        $('#Complemento').val(data.complemento);
+                        $('#Bairro').val(data.bairro);
+                        $('#Localidade').val(data.localidade);
+                        $('#UF').val(data.uf);
+                    }else{
+                        $("#ErroAoBuscarCEP").html('Erro ao buscar CEP informado, preencha o endereço manualmente.');
+                        $('#Logradouro').val("");
+                        $('#Complemento').val("");
+                        $('#Bairro').val("");
+                        $('#Localidade').val("");
+                        $('#UF').val("");
+                    }
+                }
+            );
+        });
+    </script>
 }
